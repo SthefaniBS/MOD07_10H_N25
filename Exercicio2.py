@@ -1,7 +1,6 @@
 with open('C:\\Users\\ESEN\\Desktop\\Ficheiros\\passatempos.txt', 'r', encoding='utf-8') as f:
     dicionario = {}
-    nomes_pts = f.readlines()
-    for nome_pt in nomes_pts:
+    for nome_pt in f.readlines():
         # Remover \ns
         if '\n' in nome_pt:
             nome_pt = nome_pt.rstrip('\n')
