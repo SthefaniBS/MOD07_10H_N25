@@ -972,7 +972,7 @@ def mostrarestatisticas(clube_posicao):
 
 # PRGRAMA PRINCIPAL.
 opcao = input(
-    "1- Consultar informações\n2- Editar informações\n0- Sair\n: ").strip().upper()
+    "1- Consultar informações\n2- Editar informações\n3- Pesquisas avançadas\n0- Sair\n: ").strip().upper()
 clube = input("\n\nESCOLHA O CLUBE:\n1-São Paulo\n2-Flamengo\n3-Vasco\n: ")
 
 while clube not in "123":
@@ -1028,6 +1028,8 @@ elif opcao == '2':
         pass
     else:
         print("COMANDO INVÁLIDO.")
+
+
 
 else:
     print("COMANDO INVÁLIDO")
