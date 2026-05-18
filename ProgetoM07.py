@@ -970,6 +970,16 @@ def mostrarestatisticas(clube_posicao):
         print(f" {c}: {v}")
 
 
+def validar_int(pergunta):
+    erro=True
+    while erro:
+        try:
+            valor=int(input(pergunta))
+            erro=False
+        except ValueError:
+            valor=int(input(f'❗ DADO INVÁLIDO ❗\n tente novamente: '))
+    return valor
+
 # PRGRAMA PRINCIPAL.
 opcao = input(
     "1- Consultar informações\n2- Editar informações\n3- Pesquisas avançadas\n0- Sair\n: ").strip().upper()
@@ -1029,6 +1039,68 @@ elif opcao == '2':
     else:
         print("COMANDO INVÁLIDO.")
 
+elif opcao=='3':
+    menuP = input("\n\nPesquisas avançadas sobre:\n 1- Jogadores\n 2- Treinadores\n 3- Jogos (CB 2026)\n 4- Estatísticas (CB 2026)\n 0- Sair\n : ")
+
+    if menuP=='1':
+        submenu=input("\n1- Jogadores com mais de X golos em posição específica\n2- Jogadores ativos com mais de X golos em menos de X jogos\n3- Jogadores mais eficientes: golos por jogo e poucos cartões.\n0- Sair\n: ").strip()
+
+        if submenu=='1':
+            
+            quantidademin_golos=validar_int("Insira a quantidade mínima de golos desejada: ")
+            
+            posicao=input("Posição desejada (G/D/M/A): ").strip().upper()
+            while posicao not in 'GDMA':
+                posicao=input("❗ DADO INVÁLIDO ❗\n Posição desejada (G/D/M/A): ").strip().upper()
+
+            lista1=[]
+            for id_jogador in Gestao_campeonato['Jogadores'][clube_posicao]:
+                if Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['posição']==posicao and  Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['golos'] < quantidademin_golos:
+                    lista1.append(id_jogador)
+                    print(f"> Camisa {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['camisa']}: {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['nome']}\n - Posição: {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['posição']}\n - Golos: {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['golos']}.")
+            
+            if len(lista1)==0:
+                print(f"\n😞   Nenhum jogador na posição {posicao} se encontra com um valor de golos igual ou superior à {quantidademin_golos}.")
+
+        elif submenu=='2':
+            quantidademin_golos=validar_int('Insira a quantidade mínima de golos desejada: ')
+            quantidademax_jogos=validar_int('Insira a quantidade maxima de jogos desejada: ')
+
+            lista2=[]
+            for id_jogador in Gestao_campeonato['Jogadores'][clube_posicao]:
+                if Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['jogos']<=quantidademax_jogos and Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['golos'] >= quantidademin_golos:
+                    lista2.append(id_jogador)
+                    print(f"> Camisa {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['camisa']}: {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['nome']}\n - {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['golos']} golos em {Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['jogos']} jogos.")
+
+            if len(lista2)==0:
+                print(f"\n😞   Nenhum jogador que tenha jogado no máximo {quantidademax_jogos} jogos marcou um valor de golos igual ou superior à {quantidademin_golos}")
+        
+        elif submenu=='3':
+            print("\n  ⚠️  OBS: Estão a se considerados jogadores que jogaram no mínimo 1 jogo. ⚠️")
+            eficiencia_golos_jogos=[]
+            eficiencia_cartoes_jogos=[]
+            ids_mais_de_1_jogo=[]
+            for id_jogador in Gestao_campeonato['Jogadores'][clube_posicao]:
+                if Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['jogos']!=0:
+                    ids_mais_de_1_jogo.append(id_jogador)
+                    eficiencia_golos_jogos.append(round(Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['golos']/Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['jogos'],2))
+                    eficiencia_cartoes_jogos.append(round((Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['cartões'][0]+Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['cartões'][1])/Gestao_campeonato['Jogadores'][clube_posicao][id_jogador]['jogos'],2))
+            
+            if len(ids_mais_de_1_jogo) ==0:
+                print("\n😞  Nenhum jogador jogou no mínimo 1 jogo.")
+            else:
+                eficiencias=[]
+                ids=[]
+                for i in range(len(eficiencia_golos_jogos)):
+                    try:
+                        eficiencias.append(eficiencia_golos_jogos[i]/eficiencia_cartoes_jogos[i])
+                        ids.append(ids_mais_de_1_jogo[i])
+                    except ZeroDivisionError:
+                        continue
+                n_max_eficiencia=max(eficiencias)
+                for i in range(len(eficiencias)):
+                    if eficiencias[i]==n_max_eficiencia:
+                        print(f"> Camisa {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['camisa']} - {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['nome']} é o jogador mais eficiente do clube:\n - jogos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['jogos']}\n - golos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['golos']}\n - cartões amarelos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['cartões'][0]}\n - cartões vermelhos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['cartões'][1]}\n")
 
 
 else:
