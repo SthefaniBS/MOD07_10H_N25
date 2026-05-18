@@ -1176,7 +1176,7 @@ elif opcao=='3':
                     for i in range(len(ids_a)):
                         print(f"{Gestao_campeonato['Histórico Treinadores'][clube_posicao][ids_a[i]]['nome']} - {a[i]}% de aproveitamento.")
     elif menuP=='3':
-        submenu=input("\n1- Jogos em que o clube marcou pelo menos X golos e sofreu no máximo Y\n2- Jogos contra um adversário específico, em que o cluve venceu\n3- Jogos em que o clube venceu, marcou mais de X golos e não sofreu nenhum\n0- Sair\n: ").strip()
+        submenu=input("\n1- Jogos em que o clube marcou pelo menos X golos e sofreu no máximo Y\n2- Mostrar jogos em que o clube venceu por mais de X golos\n3- O desempenho do clube contra um adversário específico, apresentando a percentagem de vitórias, empates e derrotas\n0- Sair\n: ").strip()
         
         if submenu=='1':
             n_golos_clube=validar_int('Nº mínimo de golos para o clube: ')
@@ -1192,7 +1192,56 @@ elif opcao=='3':
             if len(lista4)==0:
                 print("Até agora nenhum jogo desputado foi encontrado com essas características.")
 
+        elif submenu=='2':
+            n_golos=validar_int('Nº mínimo de golos: ')
+            rodadas=[]
+            for rodada in Gestao_campeonato['Jogos CB'][clube_posicao]:
+                if Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][0]>Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][1] and Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][0]>=n_golos:
+                    rodadas.append(rodada)
+                    print(f'{rodada}º rodada - {Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][0]} golos marcados e {Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][1]} golos sofridos.')
+                
+            if len(rodadas)==0:
+                print("Nenhum jogo foi encontrado com essas características.")
+        
+        elif submenu=='3':
+            #o desempenho do clube contra um adversário específico, apresentando a percentagem de vitórias, empates e derrotas
+            adversario=input("Nome do adversário: ").strip().title()
+            resultados=[]
+            for rodada in Gestao_campeonato['Jogos CB'][clube_posicao]:
+                if Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['adversário'] ==adversario:
+                    resultados.append(Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'])
+            
+            if len(resultados)==0:
+                print(f"Não foram encontrados jogos com o {adversario}.")
+            else:
+                v=0
+                e=0
+                d=0
+                for resultado in resultados:
+                    golosM=resultado[0]
+                    golosS=resultado[1]
+                    if golosM>golosS:
+                        v+=1
+                    elif golosM==golosS:
+                        e+=1
+                    else:
+                        d+=1
+                try:
+                    percentagemV=v*100/len(resultados)
+                except ZeroDivisionError:
+                    percentagemV=0
+                try:
+                    percentagemE=e*100/len(resultados)
+                except ZeroDivisionError:
+                    percentagemE=0
+                try:
+                    percentagemD=d*100/len(resultados)
+                except ZeroDivisionError:
+                    percentagemD=0
+                
+                print(f"Total jogos: {len(resultados)} >  {round(percentagemV,1)}% vitórias - {round(percentagemE,1)}% empates - {round(percentagemD,1)}% derrotas.")
 
-  
+
+
 else:
     print("COMANDO INVÁLIDO")
