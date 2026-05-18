@@ -980,6 +980,31 @@ def validar_int(pergunta):
             valor=int(input(f'❗ DADO INVÁLIDO ❗\n tente novamente: '))
     return valor
 
+def validar_float(pergunta):
+    erro=True
+    while erro:
+        try:
+            valor=float(input(pergunta))
+            erro=False
+        except ValueError:
+            valor=int(input(f'❗ DADO INVÁLIDO ❗\n tente novamente: '))
+    return valor
+
+def calcularaproveitamentos():
+    aproveitamentos=[]
+    ids=[]
+    for id_treinador in Gestao_campeonato['Histórico Treinadores'][clube_posicao]:
+        try:
+            aproveitamento=(Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['vitórias']*3)+(Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['empates']*1)
+            n_max_pontos=Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['jogos']*3
+            aproveitamento=aproveitamento/n_max_pontos*100
+            aproveitamentos.append(round(aproveitamento,1))
+            ids.append(id_treinador)
+        except ZeroDivisionError:
+            aproveitamentos.append(0)
+    
+    return aproveitamentos,ids
+
 # PRGRAMA PRINCIPAL.
 opcao = input(
     "1- Consultar informações\n2- Editar informações\n3- Pesquisas avançadas\n0- Sair\n: ").strip().upper()
@@ -1102,6 +1127,57 @@ elif opcao=='3':
                     if eficiencias[i]==n_max_eficiencia:
                         print(f"> Camisa {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['camisa']} - {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['nome']} é o jogador mais eficiente do clube:\n - jogos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['jogos']}\n - golos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['golos']}\n - cartões amarelos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['cartões'][0]}\n - cartões vermelhos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['cartões'][1]}\n")
 
+        elif menuP=='2':
+            submenu=input("\n1- Treinadores com mais de X vitórias e menos de X derrotas\n2- Treinador com maior aproveitamento geral\n3- Treinadores com aproveitamento acima de X%\n0- Sair\n: ").strip()
+
+            if submenu=='1':
+                vitorias_min=validar_int('Nº mínimo de vitórias: ')
+                derrotas_max=validar_int('Nº máximo de derrotas: ')
+
+                lista3=[]
+                for id_treinador in Gestao_campeonato['Histórico Treinadores'][clube_posicao]:
+                    if Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['vitórias']>=vitorias_min and Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['derrotas'] <= derrotas_max:
+                        lista3.append(id_treinador)
+                        print(f"> Camisa {Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['camisa']} - {Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['nome']}: {Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['vitórias']} vitórias e {Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_treinador]['derrotas']} derrotas.")
+
+                if len(lista3) ==0:
+                    print("\n😞  Nenhum treinador atual/antigo foi encontrado com as características desejadas.")
+
+            elif submenu=='2':
+                
+                aproveitamentos,ids=calcularaproveitamentos()
+                    
+                
+                if len(ids)==0:
+                    print("\nTodos os treinadores tiveram um aproveitamento de 0%.")
+                else:
+                    melhores=[]
+                    n_aproveitamento_max=max(aproveitamentos)
+                    for i in range(len(aproveitamentos)):
+                        if aproveitamentos[i]==n_aproveitamento_max:
+                            melhores.append(ids[i])
+                    
+                    for id_melhor in melhores:
+                        print(f"\n{Gestao_campeonato['Histórico Treinadores'][clube_posicao][id_melhor]['nome']} - aproveitamento: {n_aproveitamento_max}%")
+            
+            elif submenu=='3':
+                aproveitamento_min=validar_float('Insira a percentagem mínima de aproveitamento: ')
+                aproveitamentos,ids=calcularaproveitamentos()
+                if len(ids)==0:
+                    print("\nTodos os treinadores tiveram um aproveitamento de 0%.")
+                else:
+                    a=[]
+                    ids_a=[]
+                    for i in range(len(aproveitamentos)):
+                        if aproveitamentos[i]>=aproveitamento_min:
+                            a.append(aproveitamentos[i])
+                            ids_a.append(ids[i])
+                    
+                    if len(a)==0:
+                        print("Nenhum treinador possui aproveitamento igual ou superior ao solicitado.")
+                    else:
+                        for i in range(len(ids_a)):
+                            print(f"{Gestao_campeonato['Histórico Treinadores'][clube_posicao][ids_a[i]]['nome']} - {a[i]}% de aproveitamento.")
 
 else:
     print("COMANDO INVÁLIDO")
