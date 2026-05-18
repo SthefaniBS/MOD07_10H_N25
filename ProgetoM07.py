@@ -974,7 +974,7 @@ def validar_int(pergunta):
             valor=int(input(pergunta))
             erro=False
         except ValueError:
-            valor=int(input(f'❗ DADO INVÁLIDO ❗\n tente novamente: '))
+            print(f'❗ DADO INVÁLIDO ❗')
     return valor
 
 def validar_float(pergunta):
@@ -984,7 +984,7 @@ def validar_float(pergunta):
             valor=float(input(pergunta))
             erro=False
         except ValueError:
-            valor=int(input(f'❗ DADO INVÁLIDO ❗\n tente novamente: '))
+            print(f'❗ DADO INVÁLIDO ❗\n tente novamente: ')
     return valor
 
 def calcularaproveitamentos():
@@ -1175,6 +1175,24 @@ elif opcao=='3':
                 else:
                     for i in range(len(ids_a)):
                         print(f"{Gestao_campeonato['Histórico Treinadores'][clube_posicao][ids_a[i]]['nome']} - {a[i]}% de aproveitamento.")
+    elif menuP=='3':
+        submenu=input("\n1- Jogos em que o clube marcou pelo menos X golos e sofreu no máximo Y\n2- Jogos contra um adversário específico, em que o cluve venceu\n3- Jogos em que o clube venceu, marcou mais de X golos e não sofreu nenhum\n0- Sair\n: ").strip()
+        
+        if submenu=='1':
+            n_golos_clube=validar_int('Nº mínimo de golos para o clube: ')
+            n_golos_adversario=validar_int('Nº máximo de golos para o adversário: ')
 
+            lista4=[]
+            for rodada in Gestao_campeonato['Jogos CB'][clube_posicao]:
+                if Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][0]>=n_golos_clube and Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][1] <=n_golos_adversario:
+                    lista4.append(rodada)
+                    print(f"\n-- {rodada}º rodada --")
+                    print(f"golos marcados {Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][0]} - golos sofridos {Gestao_campeonato['Jogos CB'][clube_posicao][rodada]['golos'][1]}")
+            
+            if len(lista4)==0:
+                print("Até agora nenhum jogo desputado foi encontrado com essas características.")
+
+
+  
 else:
     print("COMANDO INVÁLIDO")
