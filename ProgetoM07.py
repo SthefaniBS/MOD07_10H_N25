@@ -1062,7 +1062,7 @@ elif opcao == '2':
         print("COMANDO INVÁLIDO.")
 
 elif opcao=='3':
-    menuP = input("\n\nPesquisas avançadas sobre:\n 1- Jogadores\n 2- Treinadores\n 3- Jogos (CB 2026)\n 4- Estatísticas (CB 2026)\n 0- Sair\n : ")
+    menuP = input("\n\nPesquisas avançadas sobre:\n 1- Jogadores\n 2- Treinadores\n 3- Jogos (CB 2026)\n 0- Sair\n : ")
 
     if menuP=='1':
         submenu=input("\n1- Jogadores com mais de X golos em posição específica\n2- Jogadores ativos com mais de X golos em menos de X jogos\n3- Jogadores mais eficientes: golos por jogo e poucos cartões.\n0- Sair\n: ").strip()
@@ -1240,8 +1240,6 @@ elif opcao=='3':
                     percentagemD=0
                 
                 print(f"Total jogos: {len(resultados)} >  {round(percentagemV,1)}% vitórias - {round(percentagemE,1)}% empates - {round(percentagemD,1)}% derrotas.")
-
-
 
 else:
     print("COMANDO INVÁLIDO")
