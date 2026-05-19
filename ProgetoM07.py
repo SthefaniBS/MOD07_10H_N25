@@ -1005,6 +1005,9 @@ def calcularaproveitamentos():
 # PRGRAMA PRINCIPAL.
 opcao = input(
     "1- Consultar informações\n2- Editar informações\n3- Pesquisas avançadas\n0- Sair\n: ").strip().upper()
+while opcao not in '1230':
+    opcao = input("!DADO INVÁLIDO!  Tente novamente: ").strip().upper()
+
 clube = input("\n\nESCOLHA O CLUBE:\n1-São Paulo\n2-Flamengo\n3-Vasco\n: ")
 
 while clube not in "123":
@@ -1012,48 +1015,70 @@ while clube not in "123":
 
 clube_posicao = int(clube)-1
 
+
 if opcao == '1':
     menuC = input("\n\nConsultar informações sobre:\n 1- Jogadores\n 2- Treinadores\n 3- Jogos (CB 2026)\n 4- Estatísticas (CB 2026)\n 0- Sair\n : ").strip()
+    while menuC not in '12340':
+        menuC = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
 
     if menuC == '1':
         submenu = input(
             "\n\n1- Lista de jogadores ativos\n2- Melhor(es) marcador(es)\n3- Dados de um jogador\n: ").strip()
+        while submenu not in '123':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         ConsultarJogadores(submenu, clube_posicao)
 
     elif menuC == '2':
         submenu = input(
             "\n1- Dados do treinador atual\n2- Histórico de treinadores (2026)\n: ").strip()
+        while submenu not in '12':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         ConsultarTreinadores(submenu, clube_posicao)
 
     elif menuC == '3':
         submenu = input(
             "\n1- Dados de um determinado jogo\n2- Marcadores de golos de um determinado jogo\n3- Quantas rodadas faltam para o fim do CB\n: ").strip()
+        while submenu not in '123':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         ConsultarJogos(submenu, clube_posicao)
 
     elif menuC == '4':
-        submenu = input("\n1- Ver as estatísticas de um determinado clube.")
-        mostrarestatisticas(clube_posicao)
+        submenu = input("\n1- Ver as estatísticas de um determinado clube.\n0- Sair")
+        while submenu not in '10':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
+        if submenu=='1':
+            mostrarestatisticas(clube_posicao)
+        else:
+            pass
     elif menuC == '0':
         pass
-    else:
-        print("COMANDO INVÁLIDO.")
+
 elif opcao == '2':
     menuE = input(
         "\n\nEditar informações sobre:\n 1- Jogadores\n 2- Treinadores\n 3- Jogos (CB 2026)\n 0- Sair\n : ").strip()
 
+    while menuE not in '1230':
+        menuE = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
+
     if menuE == '1':
         submenu = input(
             "\n1- Adicionar jogador\n2- Remover jogador\n3- Editar o nº da camisa\n4- Editar estado\n:").strip()
+        while submenu not in '1234':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         EditarJogadores(submenu, clube_posicao)
 
     elif menuE == '2':
         submenu = input(
             "\n1- Demitir Treinador\n2- Contratar Treinador\n: ").strip()
+        while submenu not in '12':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         EditarTreinadores(submenu, clube_posicao)
 
     elif menuE == '3':
         submenu = input(
             "\n1- Adicionar novo resultado de jogo\n0- Sair\n: ").strip()
+        while submenu not in '10':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         EditarJogos(submenu, clube_posicao)
 
     elif menuE == '0':
@@ -1063,14 +1088,16 @@ elif opcao == '2':
 
 elif opcao=='3':
     menuP = input("\n\nPesquisas avançadas sobre:\n 1- Jogadores\n 2- Treinadores\n 3- Jogos (CB 2026)\n 0- Sair\n : ")
-
+    while menuP not in '1230':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
     if menuP=='1':
         submenu=input("\n1- Jogadores com mais de X golos em posição específica\n2- Jogadores ativos com mais de X golos em menos de X jogos\n3- Jogadores mais eficientes: golos por jogo e poucos cartões.\n0- Sair\n: ").strip()
-
+        while submenu not in '1230':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         if submenu=='1':
             
             quantidademin_golos=validar_int("Insira a quantidade mínima de golos desejada: ")
-            
+
             posicao=input("Posição desejada (G/D/M/A): ").strip().upper()
             while posicao not in 'GDMA':
                 posicao=input("❗ DADO INVÁLIDO ❗\n Posição desejada (G/D/M/A): ").strip().upper()
@@ -1123,10 +1150,12 @@ elif opcao=='3':
                 for i in range(len(eficiencias)):
                     if eficiencias[i]==n_max_eficiencia:
                         print(f"> Camisa {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['camisa']} - {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['nome']} é o jogador mais eficiente do clube:\n - jogos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['jogos']}\n - golos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['golos']}\n - cartões amarelos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['cartões'][0]}\n - cartões vermelhos: {Gestao_campeonato['Jogadores'][clube_posicao][ids[i]]['cartões'][1]}\n")
-
+        else:
+            pass
     elif menuP=='2':
         submenu=input("\n1- Treinadores com mais de X vitórias e menos de X derrotas\n2- Treinador com maior aproveitamento geral\n3- Treinadores com aproveitamento acima de X%\n0- Sair\n: ").strip()
-
+        while submenu not in '1230':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         if submenu=='1':
             vitorias_min=validar_int('Nº mínimo de vitórias: ')
             derrotas_max=validar_int('Nº máximo de derrotas: ')
@@ -1175,9 +1204,12 @@ elif opcao=='3':
                 else:
                     for i in range(len(ids_a)):
                         print(f"{Gestao_campeonato['Histórico Treinadores'][clube_posicao][ids_a[i]]['nome']} - {a[i]}% de aproveitamento.")
+        else:
+            pass
     elif menuP=='3':
         submenu=input("\n1- Jogos em que o clube marcou pelo menos X golos e sofreu no máximo Y\n2- Mostrar jogos em que o clube venceu por mais de X golos\n3- O desempenho do clube contra um adversário específico, apresentando a percentagem de vitórias, empates e derrotas\n0- Sair\n: ").strip()
-        
+        while submenu not in '1230':
+            submenu = input("\n\n! COMANDO INVÁLIDO !    Tente novamente: ").strip()
         if submenu=='1':
             n_golos_clube=validar_int('Nº mínimo de golos para o clube: ')
             n_golos_adversario=validar_int('Nº máximo de golos para o adversário: ')
@@ -1240,6 +1272,10 @@ elif opcao=='3':
                     percentagemD=0
                 
                 print(f"Total jogos: {len(resultados)} >  {round(percentagemV,1)}% vitórias - {round(percentagemE,1)}% empates - {round(percentagemD,1)}% derrotas.")
-
+        
+        else:
+            pass
 else:
     print("COMANDO INVÁLIDO")
+
+#Atualizar Ficheiros
