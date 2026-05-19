@@ -31,11 +31,7 @@ def ler_capiturarerros(ficheiro):
 
     return existe, conteudo
 
-
-# Essa função cria novos ficheiros e retorna o conteúdo.
-def criarficheiros(ficheiro):
-
-    def escreverjogadores(dicionario, objeto_de_ficheiro):
+def escreverjogadores(dicionario, objeto_de_ficheiro):
         n = 0
         for chave in dicionario:
             n += 1
@@ -46,7 +42,7 @@ def criarficheiros(ficheiro):
                 objeto_de_ficheiro.write(
                     f'{chave}|{dicionario[chave]['nome']}|{dicionario[chave]['camisa']}|{dicionario[chave]['posição']}|{dicionario[chave]['idade']}|{dicionario[chave]['golos']}|{dicionario[chave]['cartões'][0]},{dicionario[chave]['cartões'][1]}|{dicionario[chave]['estado']}|{dicionario[chave]['jogos']}\n')
 
-    def escrevertreinadores(dicionario, objeto_de_ficheiro):
+def escrevertreinadores(dicionario, objeto_de_ficheiro):
         n = 0
         for t in dicionario:
             n += 1
@@ -65,7 +61,7 @@ def criarficheiros(ficheiro):
                     objeto_de_ficheiro.write(
                         f'{t}|{dicionario[t]['nome']}|{dicionario[t]['estado']}|{dicionario[t]['entrada']}|{dicionario[t]['jogos']}|{dicionario[t]['vitórias']}|{dicionario[t]['empates']}|{dicionario[t]['derrotas']}|{dicionario[t]['nacionalidade']}|{dicionario[t]['saída']}\n')
 
-    def escreverjogos(dicionario, objeto_de_ficheiro):
+def escreverjogos(dicionario, objeto_de_ficheiro):
         n = 0
         for jogo in dicionario:
             n += 1
@@ -74,13 +70,16 @@ def criarficheiros(ficheiro):
             else:
                 objeto_de_ficheiro.write(f'{jogo}|{dicionario[jogo]['data']}|{dicionario[jogo]['hora']}|{dicionario[jogo]['adversário']}|{dicionario[jogo]['local']}|{dicionario[jogo]['golos'][0]},{dicionario[jogo]['golos'][1]}|{str(dicionario[jogo]['cartões A']).replace('[', '').replace(']', '')}|{str(dicionario[jogo]['cartões V']).replace('[', '').replace(']', '')}|{str(dicionario[jogo]['marcadores']).replace('[', '').replace(']', '')}\n')
 
-    def escreverestatisticas(dicionario, objeto_de_ficheiro):
+def escreverestatisticas(dicionario, objeto_de_ficheiro):
 
         for dado in dicionario.items():
             if dado[0] == 'saldo de golos':
                 objeto_de_ficheiro.write(f'{dado[1]}')
             else:
                 objeto_de_ficheiro.write(f'{dado[1]}|')
+
+# Essa função cria novos ficheiros e retorna o conteúdo.
+def criarficheiros(ficheiro):
 
     with open(ficheiro, 'x+', encoding='utf-8')as f:
 
@@ -609,8 +608,6 @@ def ConsultarJogadores(submenu, clube_posicao):
         else:
             mostrar_jogadores(nomes_iguais[0], clube_posicao)
 
-    else:
-        print("> COMANDO INVÁLIDO. <")
 
 
 def EditarJogadores(submenu, clube_posicao):
@@ -757,8 +754,6 @@ def EditarJogadores(submenu, clube_posicao):
                                                               ]['estado'] = "A"
                 print(f"{nome} passou de I para A.")
 
-    else:
-        print("> COMANDO INVÁLIDO. <")
 
 
 def ConsultarTreinadores(submenu, clube_posicao):
@@ -1275,7 +1270,37 @@ elif opcao=='3':
         
         else:
             pass
-else:
-    print("COMANDO INVÁLIDO")
+
 
 #Atualizar Ficheiros
+if clube_posicao==0:
+    with open('jogadoresSaoPaulo.txt','w',encoding='utf-8') as jogadores:
+        escreverjogadores(Gestao_campeonato['Jogadores'][clube_posicao],jogadores)
+    with open('treinadoresSaoPaulo.txt','w',encoding='utf-8') as treinadores:
+        escrevertreinadores(Gestao_campeonato['Histórico Treinadores'][clube_posicao],treinadores)
+    with open('jogosSaoPaulo.txt','w',encoding='utf-8') as jogos:
+        escreverjogos(Gestao_campeonato['Jogos CB'][clube_posicao],jogos)
+    with open('estatisticasSaoPaulo.txt','w',encoding='utf-8') as estatisticas:
+        escreverestatisticas(Gestao_campeonato['Estatísticas CB'][clube_posicao],estatisticas)
+
+
+elif clube_posicao==1:
+    with open('jogadoresFlamengo.txt','w',encoding='utf-8') as jogadores:
+        escreverjogadores(Gestao_campeonato['Jogadores'][clube_posicao],jogadores)
+    with open('treinadoresFlamengo.tt','w',encoding='utf-8') as treinadores:
+        escrevertreinadores(Gestao_campeonato['Histórico Treinadores'][clube_posicao],treinadores)
+    with open('jogosFlamengo.txt','w',encoding='utf-8') as jogos:
+        escreverjogos(Gestao_campeonato['Jogos CB'][clube_posicao],jogos)
+    with open('estatisticasFlamengo.txt','w',encoding='utf-8') as estatisticas:
+        escreverestatisticas(Gestao_campeonato['Estatísticas CB'][clube_posicao],estatisticas)
+
+elif clube_posicao==2:
+    with open('jogadoresVasco.txt','w',encoding='utf-8') as jogadores:
+        escreverjogadores(Gestao_campeonato['Jogadores'][clube_posicao],jogadores)
+    with open('treinadoresVasco.txt','w',encoding='utf-8') as treinadores:
+        escrevertreinadores(Gestao_campeonato['Histórico Treinadores'][clube_posicao],treinadores)
+    with open('jogosVasco.txt','w',encoding='utf-8') as jogos:
+        escreverjogos(Gestao_campeonato['Jogos CB'][clube_posicao],jogos)
+    with open('estatisticasVasco.txt','w',encoding='utf-8') as estatisticas:
+        escreverestatisticas(Gestao_campeonato['Estatísticas CB'][clube_posicao],estatisticas)
+    
