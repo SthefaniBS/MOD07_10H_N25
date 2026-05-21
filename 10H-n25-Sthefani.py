@@ -362,9 +362,8 @@ def tranformarestatisticas():
     return [dicionario_SaoPaulo, dicionario_Flamengo, dicionario_Vasco]
 
 
-# Transformar os conteúdos dos ficheiros em dicionário.
+# Transformar os conteúdos dos ficheiros em lista de dicionário.
 jogadores = transformarjogadores()
-
 treinadores = transformartreinadores()
 jogos = transformarjogos()
 estatisticas = tranformarestatisticas()
@@ -378,7 +377,6 @@ Gestao_campeonato = {
 
     'Estatísticas CB': estatisticas
 }
-
 
 # >>MANIPULANDO OS DICIONÁRIOS<<
 
